@@ -1,0 +1,102 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class ProvaEx01 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Random rand = new Random();
+        int qtdGasta, tentativas = 0, senha, qtdUs, formPag, qtddinheiro = 0, qtddébito = 0, qtdcrédito = 0, qtdAcima300 = 0, maiorCompra = 0, menorCompra = 1000;
+        double percCredito, mediaGastos, somaGastos = 0;
+        String Maisusada;
+
+        do {
+            System.out.println("Digite a senha:");
+            senha = sc.nextInt();
+            tentativas++;
+
+        } while (senha != 1234 && tentativas < 3);
+
+        if (senha != 1234) {
+            System.out.println("Acesso negado");
+            return;
+        }
+
+        do {
+            System.out.println("Informe a quantidade de clientes");
+            qtdUs = sc.nextInt();
+
+        } while (qtdUs <= 0);
+        String[][] compras = new String[qtdUs][2];
+        for (int i = 0; i < qtdUs; i++) {
+
+            do {
+                System.out.println("Informe a quantidade gasta" + (i + 1));
+                qtdGasta = rand.nextInt(0, 1001);
+
+            } while (qtdGasta < 10 || qtdGasta > 500);
+            System.out.println(qtdGasta);
+
+            compras[i][0] = String.valueOf(qtdGasta);
+
+            if (qtdGasta > 300) {
+                qtdAcima300++;
+            }
+            if (qtdGasta > maiorCompra) {
+                maiorCompra = qtdGasta;
+            }
+            if (qtdGasta < menorCompra) {
+                menorCompra = qtdGasta;
+            }
+
+            somaGastos += qtdGasta;
+
+            System.out.println("Informe a forma de pagamento (1-D, 2-C, 3-D)");
+            formPag = rand.nextInt(1, 4);
+
+            switch (formPag) {
+                case 1 -> {
+                    qtddinheiro++;
+                    compras[i][1] = "Dinheiro";
+                }
+                case 2 -> {
+                    qtddébito++;
+                    compras[i][1] = "Debito";
+                }
+                case 3 -> {
+                    qtdcrédito++;
+                    compras[i][1] = "Credito";
+                }
+            }
+
+            System.out.println(formPag);
+        }
+        if (qtddinheiro >= qtddébito &&
+                qtddinheiro >= qtdcrédito) {
+
+
+            Maisusada = "Dinheiro";
+
+
+        } else if (qtddébito >= qtdcrédito) {
+
+
+            Maisusada = "Debito";
+
+
+        } else {
+
+
+            Maisusada = "Credito";
+        }
+
+        percCredito = 100.0 * qtdcrédito / qtdUs;
+        mediaGastos = somaGastos / qtdUs;
+
+        System.out.printf("percentual de crédito: %5.2f\n", percCredito);
+        System.out.printf("Média de Gastos: %5.2f\n", mediaGastos);
+        System.out.println("maior compra:" + " " + maiorCompra);
+        System.out.println("menor compra:" + " " + menorCompra);
+        System.out.println("Clientes acima de R$300:" + " " + qtdAcima300);
+        System.out.println("Forma mais utilizada: " + Maisusada);
+    }
+}
